@@ -1,8 +1,7 @@
 [tools]
+copilot = "latest"
 gh = "latest"
-mosh = "latest"
 neovim = "latest"
-tmux = "latest"
 
 [dotfiles]
 "~/.config/mise" = { mode = "track" }

@@ -11,6 +11,7 @@
   "exclude": [],
   "recipients": [],
   "permissions": {
+    "config/config.linux.toml": 436,
     "config/config.toml": 436
   }
 }
