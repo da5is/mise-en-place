@@ -2,6 +2,8 @@
 copilot = "latest"
 gh = "latest"
 neovim = "latest"
+node = "latest"
 
 [dotfiles]
 "~/.config/mise" = { mode = "track" }
+"~/.config/mise/config.linux.toml" = { mode = "track" }
