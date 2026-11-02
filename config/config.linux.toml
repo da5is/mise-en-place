@@ -5,6 +5,6 @@
 [tools]
 mosh = "latest"
 tmux = "latest"
-"gh:pingdotgg/t3code" = "latest"
+"github:pingdotgg/t3code" = "latest"
 
 [dotfiles]
