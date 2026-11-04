@@ -12,12 +12,23 @@
       "autosave": true,
       "encrypt": false,
       "variants": []
+    },
+    {
+      "path": "config/config.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "config/tasks",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
     }
   ],
   "exclude": [],
   "recipients": [],
   "permissions": {
-    "config/config.linux.toml": 436,
-    "config/config.toml": 436
+    "config/config.linux.toml": 436
   }
 }
