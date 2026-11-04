@@ -1,0 +1,10 @@
+
+[bootstrap.packages]
+"apt:libatomic1" = "latest"
+
+[tools]
+mosh = "latest"
+tmux = "latest"
+"github:pingdotgg/t3code" = "latest"
+
+[dotfiles]
