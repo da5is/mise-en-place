@@ -66,6 +66,14 @@
   "recipients": [],
   "permissions": {
     "config/config.linux.toml": 436,
-    "config/config.toml": 436
+    "config/config.toml": 436,
+    "home/AppData": 509,
+    "home/AppData/Local": 509,
+    "home/AppData/Local/Packages": 509,
+    "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe": 509,
+    "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState": 509,
+    "home/OneDrive - Microsoft": 509,
+    "home/OneDrive - Microsoft/Documents": 509,
+    "home/OneDrive - Microsoft/Documents/PowerShell": 509
   }
 }
