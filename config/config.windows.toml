@@ -5,10 +5,6 @@
 "winget:Microsoft.PowerToys" = "latest"
 "winget:cjpais.Handy" = "latest"
 "winget:Microsoft.VisualStudioCode" = "latest"
-"winget:Microsoft.PowerShell" = "latest"
-"winget:GitHub.CopilotApp" = "latest"
-"winget:Git.Git" = "latest"
-"winget:Microsoft.PowerToys" = "latest"
 "winget:Obsidian.Obsidian" = "latest"
 
 [dotfiles]
