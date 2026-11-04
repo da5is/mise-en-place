@@ -6,5 +6,6 @@
 mosh = "latest"
 tmux = "latest"
 "github:pingdotgg/t3code" = "latest"
-
-[dotfiles]
+claude = "latest"
+codex = "latest"
+opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
