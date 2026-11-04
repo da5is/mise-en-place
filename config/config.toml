@@ -13,7 +13,6 @@ uv = "latest"
 "~/.config/mise/config.toml" = { mode = "track" }
 "~/.config/mise/config.linux.toml" = { mode = "track" }
 "~/.config/mise/config.linuxgui.toml" = { mode = "track" }
-"~/.config/mise/tasks" = { mode = "track" }
 "~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" = { mode = "track" }
 "~/.config/mise/config.windows.toml" = { mode = "track" }
 "~/.config/mise/config.windowshome.toml" = { mode = "track" }
