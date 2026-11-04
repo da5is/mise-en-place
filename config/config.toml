@@ -1,9 +1,22 @@
 [tools]
-copilot = "latest"
-gh = "latest"
+copilot-cli = "latest"
+github-cli = "latest"
+hunkdiff = "latest"
+lazygit = "latest"
 neovim = "latest"
 node = "latest"
+python = "latest"
+uv = "latest"
+
 
 [dotfiles]
 "~/.config/mise" = { mode = "track" }
+"~/.config/mise/config.toml" = { mode = "track" }
 "~/.config/mise/config.linux.toml" = { mode = "track" }
+"~/.config/mise/config.linuxgui.toml" = { mode = "track" }
+"~/.config/mise/tasks" = { mode = "track" }
+"~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" = { mode = "track" }
+"~/.config/mise/config.windows.toml" = { mode = "track" }
+"~/.config/mise/config.windowshome.toml" = { mode = "track" }
+"~/.config/mise/config.windowswork.toml" = { mode = "track" }
+"~/.config/mise/config.work.toml" = { mode = "track" }

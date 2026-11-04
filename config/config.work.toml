@@ -1,0 +1,5 @@
+[env]
+PIP_INDEX_URL = "https://packagefeedproxy.microsoft.io/pypi/simple/"
+UV_DEFAULT_INDEX = "https://packagefeedproxy.microsoft.io/pypi/simple/"
+MISE_PYPI_REGISTRY_URL = "https://packagefeedproxy.microsoft.io/pypi/simple/{}/"
+NPM_CONFIG_REGISTRY = "https://packagefeedproxy.microsoft.io/npm/"
