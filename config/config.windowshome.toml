@@ -1,0 +1,10 @@
+[bootstrap.packages]
+"winget:Zen-Team.Zen-Browser" = "latest"
+
+[tools]
+
+[dotfiles]
+"~/OneDrive/Documents/PowerShell/Microsoft.PowerShell_profile.ps1" = { mode = "track" }
+"~/OneDrive/Documents/PowerShell/Modules/ProfileHelpers/ProfileHelpers.psm1" = { mode = "track" }
+"~/OneDrive/Documents/PowerShell/Profile/prompt.ps1" = { mode = "track" }
+"~/OneDrive/Documents/PowerShell/Profile/tools.ps1" = { mode = "track" }

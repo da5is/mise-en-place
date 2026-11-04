@@ -12,6 +12,54 @@
       "autosave": true,
       "encrypt": false,
       "variants": []
+    },
+    {
+      "path": "config/config.linuxgui.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "config/config.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "config/config.windows.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "config/config.windowshome.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "config/config.windowswork.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "config/config.work.toml",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
+      "path": "home/OneDrive - Microsoft/Documents/PowerShell/Microsoft.PowerShell_profile.ps1",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
     }
   ],
   "exclude": [],

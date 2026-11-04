@@ -1,7 +1,3 @@
-
-[bootstrap.packages]
-"apt:libatomic1" = "latest"
-
 [tools]
 mosh = "latest"
 tmux = "latest"
@@ -9,3 +5,14 @@ tmux = "latest"
 claude = "latest"
 codex = "latest"
 opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
+azure-cli = { version = "2.91.0", dependency_prereleases = "allow", with = ["pip"] }
+
+
+[tasks.bootstrap]
+description = "Configure workstation"
+run = [
+    { task = "install-bicep"},
+]
+
+[env]
+_.path = ["{{env.HOME}}/.azure/bin"]

@@ -1,0 +1,7 @@
+
+[bootstrap.packages]
+"apt:libatomic1" = "latest"
+
+[tools]
+
+[dotfiles]
