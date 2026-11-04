@@ -60,6 +60,12 @@
       "autosave": true,
       "encrypt": false,
       "variants": []
+    },
+    {
+      "path": "home/OneDrive - Microsoft/Documents/PowerShell/Microsoft.PowerShell_profile.ps1",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
     }
   ],
   "exclude": [],
