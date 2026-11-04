@@ -2,14 +2,6 @@
 [bootstrap.packages]
 "apt:libatomic1" = "latest"
 
-[tasks.bootstrap]
-description = "Configure workstation"
-run = [
-    { task = "install-edge" },
-    { task = "configure-fonts" },
-    { task = "install-copilot-app" },
-]
-
 [tools]
 
 [dotfiles]
