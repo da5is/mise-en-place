@@ -7,6 +7,7 @@ codex = "latest"
 opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
 azure-cli = { version = "2.91.0", dependency_prereleases = "allow", with = ["pip"] }
 github-cli = "latest"
+copilot-cli = "latest"
 
 [tasks.bootstrap]
 
