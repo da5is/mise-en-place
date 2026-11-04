@@ -1,5 +1,4 @@
 [tools]
-copilot-cli = "latest"
 github-cli = "latest"
 hunkdiff = "latest"
 lazygit = "latest"

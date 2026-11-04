@@ -6,6 +6,7 @@
 "winget:cjpais.Handy" = "latest"
 "winget:Microsoft.VisualStudioCode" = "latest"
 "winget:Obsidian.Obsidian" = "latest"
+"winget:GitHub.Copilot" = "latest"
 
 [dotfiles]
 "~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" = { mode = "track" }
@@ -15,8 +16,6 @@
 "aqua:LargeModGames/spotatui" = "latest"
 azd = "latest"
 azure-cli = { version = "latest", version_prefix = "azure-cli-", platforms = { windows-arm64 = { asset_pattern = "azure-cli-{{ version }}-x64.zip" } } }
-copilot-cli = "latest"
-github-cli = "latest"
 lazygit = "latest"
 neovim = "latest"
 node = "latest"
