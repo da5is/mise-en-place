@@ -53,16 +53,90 @@
       "path": "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json",
       "autosave": true,
       "encrypt": false,
-      "variants": []
+      "variants": [
+        {
+          "os": [
+            "windows"
+          ],
+          "profile": null,
+          "default": false
+        }
+      ]
     },
     {
       "path": "home/OneDrive - Microsoft/Documents/PowerShell/Microsoft.PowerShell_profile.ps1",
       "autosave": true,
       "encrypt": false,
-      "variants": []
+      "variants": [
+        {
+          "os": [
+            "windows"
+          ],
+          "profile": "windowswork",
+          "default": false
+        }
+      ]
+    },
+    {
+      "path": "home/OneDrive/Documents/PowerShell/Microsoft.PowerShell_profile.ps1",
+      "autosave": true,
+      "encrypt": false,
+      "variants": [
+        {
+          "os": [
+            "windows"
+          ],
+          "profile": "windowshome",
+          "default": false
+        }
+      ]
+    },
+    {
+      "path": "home/OneDrive/Documents/PowerShell/Modules/ProfileHelpers/ProfileHelpers.psm1",
+      "autosave": true,
+      "encrypt": false,
+      "variants": [
+        {
+          "os": [
+            "windows"
+          ],
+          "profile": "windowshome",
+          "default": false
+        }
+      ]
+    },
+    {
+      "path": "home/OneDrive/Documents/PowerShell/Profile/prompt.ps1",
+      "autosave": true,
+      "encrypt": false,
+      "variants": [
+        {
+          "os": [
+            "windows"
+          ],
+          "profile": "windowshome",
+          "default": false
+        }
+      ]
+    },
+    {
+      "path": "home/OneDrive/Documents/PowerShell/Profile/tools.ps1",
+      "autosave": true,
+      "encrypt": false,
+      "variants": [
+        {
+          "os": [
+            "windows"
+          ],
+          "profile": "windowshome",
+          "default": false
+        }
+      ]
     }
   ],
-  "exclude": [],
+  "exclude": [
+    "*.local.toml"
+  ],
   "recipients": [],
   "permissions": {
     "config/config.linux.toml": 436,
@@ -71,9 +145,6 @@
     "home/AppData/Local": 509,
     "home/AppData/Local/Packages": 509,
     "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe": 509,
-    "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState": 509,
-    "home/OneDrive - Microsoft": 509,
-    "home/OneDrive - Microsoft/Documents": 509,
-    "home/OneDrive - Microsoft/Documents/PowerShell": 509
+    "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState": 509
   }
 }

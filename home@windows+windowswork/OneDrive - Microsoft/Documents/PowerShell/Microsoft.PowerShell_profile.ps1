@@ -49,4 +49,4 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
 
 if (Get-Command mise -ErrorAction SilentlyContinue) {
     mise activate pwsh | Out-String | Invoke-Expression
-}
+}(& 'C:\Users\matdavi\.local\bin\mise.exe' activate pwsh) | Out-String | Invoke-Expression
