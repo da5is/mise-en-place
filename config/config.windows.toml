@@ -10,7 +10,7 @@
 "winget:Microsoft.AzureCLI" = "latest"
 
 [dotfiles]
-"~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" = { mode = "track" }
+"~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" = { mode = "track", variants = [{ os = "windows" }] }
 
 
 [tools]
