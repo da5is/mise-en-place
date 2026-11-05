@@ -134,7 +134,9 @@
       ]
     }
   ],
-  "exclude": [],
+  "exclude": [
+    "*.local.toml"
+  ],
   "recipients": [],
   "permissions": {
     "config/config.linux.toml": 436,

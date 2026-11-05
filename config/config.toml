@@ -16,3 +16,6 @@ uv = "latest"
 "~/.config/mise/config.windowshome.toml" = { mode = "track" }
 "~/.config/mise/config.windowswork.toml" = { mode = "track" }
 "~/.config/mise/config.work.toml" = { mode = "track" }
+
+[history]
+exclude = ["*.local.toml"]
