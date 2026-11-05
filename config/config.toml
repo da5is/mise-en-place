@@ -7,6 +7,9 @@ node = "latest"
 python = "latest"
 uv = "latest"
 
+[bootstrap.services.mise-history]
+builtin = "history-watch"
+
 [dotfiles]
 "~/.config/mise" = { mode = "track" }
 "~/.config/mise/config.toml" = { mode = "track" }
