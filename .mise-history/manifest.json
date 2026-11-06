@@ -145,6 +145,12 @@
     "home/AppData/Local": 509,
     "home/AppData/Local/Packages": 509,
     "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe": 509,
-    "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState": 509
+    "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState": 509,
+    "home/OneDrive": 509,
+    "home/OneDrive/Documents": 509,
+    "home/OneDrive/Documents/PowerShell": 509,
+    "home/OneDrive/Documents/PowerShell/Modules": 509,
+    "home/OneDrive/Documents/PowerShell/Modules/ProfileHelpers": 509,
+    "home/OneDrive/Documents/PowerShell/Profile": 509
   }
 }
