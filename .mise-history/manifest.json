@@ -81,57 +81,25 @@
       "path": "home/OneDrive/Documents/PowerShell/Microsoft.PowerShell_profile.ps1",
       "autosave": true,
       "encrypt": false,
-      "variants": [
-        {
-          "os": [
-            "windows"
-          ],
-          "profile": "windowshome",
-          "default": false
-        }
-      ]
+      "variants": []
     },
     {
       "path": "home/OneDrive/Documents/PowerShell/Modules/ProfileHelpers/ProfileHelpers.psm1",
       "autosave": true,
       "encrypt": false,
-      "variants": [
-        {
-          "os": [
-            "windows"
-          ],
-          "profile": "windowshome",
-          "default": false
-        }
-      ]
+      "variants": []
     },
     {
       "path": "home/OneDrive/Documents/PowerShell/Profile/prompt.ps1",
       "autosave": true,
       "encrypt": false,
-      "variants": [
-        {
-          "os": [
-            "windows"
-          ],
-          "profile": "windowshome",
-          "default": false
-        }
-      ]
+      "variants": []
     },
     {
       "path": "home/OneDrive/Documents/PowerShell/Profile/tools.ps1",
       "autosave": true,
       "encrypt": false,
-      "variants": [
-        {
-          "os": [
-            "windows"
-          ],
-          "profile": "windowshome",
-          "default": false
-        }
-      ]
+      "variants": []
     }
   ],
   "exclude": [
