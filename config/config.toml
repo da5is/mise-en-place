@@ -1,72 +1,24 @@
-[bootstrap.packages]
-"winget:Microsoft.PowerShell" = "latest"
-"winget:GitHub.CopilotApp" = "latest"
-"winget:Git.Git" = "latest"
-"winget:Microsoft.PowerToys" = "latest"
-"winget:Obsidian.Obsidian" = "latest"
-"winget:Zen-Team.Zen-Browser" = "latest"
-
-
 [tools]
-"aqua:LargeModGames/spotatui" = "latest"
-azd = "latest"
-azure-cli = { version = "latest", version_prefix = "azure-cli-", platforms = { windows-arm64 = { asset_pattern = "azure-cli-{{ version }}-x64.zip" } } }
-copilot-cli = "latest"
 github-cli = "latest"
+hunkdiff = "latest"
 lazygit = "latest"
 neovim = "latest"
 node = "latest"
 python = "latest"
-[tools."github:zellij-org/zellij"]
-version = "latest"
-[tools."github:zellij-org/zellij".platforms]
-windows-arm64 = { asset_pattern = "zellij-x86_64-pc-windows-msvc.zip" }
+uv = "latest"
 
+[bootstrap.services.mise-history]
+builtin = "history-watch"
 
 [dotfiles]
+"~/.config/mise" = { mode = "track" }
 "~/.config/mise/config.toml" = { mode = "track" }
-"~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" = { mode = "track" }
-"~/OneDrive/Documents/PowerShell/Microsoft.PowerShell_profile.ps1" = { mode = "track" }
-"~/OneDrive/Documents/PowerShell/Modules/ProfileHelpers/ProfileHelpers.psm1" = { mode = "track" }
-"~/OneDrive/Documents/PowerShell/Profile/prompt.ps1" = { mode = "track" }
-"~/OneDrive/Documents/PowerShell/Profile/tools.ps1" = { mode = "track" }
+"~/.config/mise/config.linux.toml" = { mode = "track" }
+"~/.config/mise/config.linuxgui.toml" = { mode = "track" }
+"~/.config/mise/config.windows.toml" = { mode = "track" }
+"~/.config/mise/config.windowshome.toml" = { mode = "track" }
+"~/.config/mise/config.windowswork.toml" = { mode = "track" }
+"~/.config/mise/config.work.toml" = { mode = "track" }
 
-[tasks.bootstrap]
-description = "Run custom Windows bootstrap tasks"
-depends = ["install-victor-mono",
-
-]
-[tasks.install-victor-mono]
-description = "Install all VictorMono Nerd Font variants for current user"
-shell = "pwsh -c"
-run = '''
-$fontDir = "$env:LOCALAPPDATA\Microsoft\Windows\Fonts"
-$regPath = "HKCU:\Software\Microsoft\Windows NT\CurrentVersion\Fonts"
-$temp = Join-Path $env:TEMP "VictorMono-NF"
-
-New-Item -ItemType Directory -Force -Path $temp, $fontDir | Out-Null
-
-try {
-    $url = "https://github.com/ryanoasis/nerd-fonts/releases/latest/download/VictorMono.zip"
-    Invoke-WebRequest $url -OutFile "$temp\VictorMono.zip"
-    Expand-Archive "$temp\VictorMono.zip" -DestinationPath $temp -Force
-
-    Get-ChildItem $temp -Filter "*.ttf" -Recurse |
-        ForEach-Object {
-            $dest = Join-Path $fontDir $_.Name
-
-            if (-not (Test-Path $dest)) {
-                Copy-Item $_.FullName $dest
-                New-ItemProperty -Path $regPath `
-                    -Name "$($_.BaseName) (TrueType)" `
-                    -Value $dest `
-                    -PropertyType String -Force | Out-Null
-            }
-        }
-}
-finally {
-    Remove-Item $temp -Recurse -Force
-}
-
-Write-Host "All VictorMono Nerd Font variants installed"
-'''
+[history]
+exclude = ["*.local.toml"]
