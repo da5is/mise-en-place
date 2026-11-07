@@ -8,6 +8,10 @@
 "winget:Obsidian.Obsidian" = "latest"
 "winget:GitHub.Copilot" = "latest"
 "winget:Microsoft.AzureCLI" = "latest"
+"scoop:which" = "latest"
+
+[bootstrap.hooks.pre-packages]
+run_windows = "mise run install-scoop"
 
 [dotfiles]
 "~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" = { mode = "track", variants = [{ os = "windows" }] }
@@ -29,6 +33,20 @@ windows-arm64 = { asset_pattern = "zellij-x86_64-pc-windows-msvc.zip" }
 description = "Run custom Windows bootstrap tasks"
 depends = ["install-victor-mono",
 ]
+
+[tasks.install-scoop]
+description = "Install Scoop for current user if missing"
+shell = "pwsh -NoProfile -Command"
+run = '''
+$ErrorActionPreference = "Stop"
+$scoopDir = if ($env:SCOOP) { $env:SCOOP } else { Join-Path $HOME "scoop" }
+if (Test-Path -LiteralPath $scoopDir -PathType Container) {
+    Write-Host "Scoop directory already exists at $scoopDir; skipping installation."
+} elseif (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
+    Invoke-RestMethod https://get.scoop.sh | Invoke-Expression
+}
+'''
+
 [tasks.install-victor-mono]
 description = "Install all VictorMono Nerd Font variants for current user"
 shell = "pwsh -c"
