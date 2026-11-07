@@ -40,7 +40,6 @@ shell = "powershell -NoProfile -Command"
 run = '''
 $ErrorActionPreference = "Stop"
 if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
-    Set-ExecutionPolicy RemoteSigned -Scope Process -Force
     Invoke-RestMethod https://get.scoop.sh | Invoke-Expression
 }
 '''
