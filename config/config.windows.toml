@@ -39,7 +39,10 @@ description = "Install Scoop for current user if missing"
 shell = "pwsh -NoProfile -Command"
 run = '''
 $ErrorActionPreference = "Stop"
-if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
+$scoopDir = if ($env:SCOOP) { $env:SCOOP } else { Join-Path $HOME "scoop" }
+if (Test-Path -LiteralPath $scoopDir -PathType Container) {
+    Write-Host "Scoop directory already exists at $scoopDir; skipping installation."
+} elseif (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
     Invoke-RestMethod https://get.scoop.sh | Invoke-Expression
 }
 '''
