@@ -1,5 +1,6 @@
 [bootstrap.packages]
 "winget:Zen-Team.Zen-Browser" = "latest"
+"winget:Tailscale.Tailscale" = "latest"
 
 [tools]
 
