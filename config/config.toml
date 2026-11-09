@@ -1,24 +1,30 @@
+[bootstrap.packages]
+"winget:Microsoft.PowerShell" = "latest"
+"winget:GitHub.CopilotApp" = "latest"
+"winget:Git.Git" = "latest"
+"winget:Microsoft.PowerToys" = "latest"
+"winget:cjpais.Handy" = "latest"
+"winget:Microsoft.VisualStudioCode" = "latest"
+
 [tools]
+"aqua:LargeModGames/spotatui" = "latest"
+azd = "latest"
+azure-cli = { version = "latest", version_prefix = "azure-cli-", platforms = { windows-arm64 = { asset_pattern = "azure-cli-{{ version }}-x64.zip" } } }
+copilot-cli = "latest"
 github-cli = "latest"
-hunkdiff = "latest"
+"github:obsidianmd/obsidian-releases" = "latest"
 lazygit = "latest"
 neovim = "latest"
 node = "latest"
 python = "latest"
-uv = "latest"
+"github:zellij-org/zellij" = "latest"
 
-[bootstrap.services.mise-history]
-builtin = "history-watch"
+[env]
+PIP_INDEX_URL = "https://packagefeedproxy.microsoft.io/pypi/simple/"
+UV_DEFAULT_INDEX = "https://packagefeedproxy.microsoft.io/pypi/simple/"
+MISE_PYPI_REGISTRY_URL = "https://packagefeedproxy.microsoft.io/pypi/simple/{}/"
+NPM_CONFIG_REGISTRY = "https://packagefeedproxy.microsoft.io/npm/"
 
 [dotfiles]
-"~/.config/mise" = { mode = "track" }
 "~/.config/mise/config.toml" = { mode = "track" }
-"~/.config/mise/config.linux.toml" = { mode = "track" }
-"~/.config/mise/config.linuxgui.toml" = { mode = "track" }
-"~/.config/mise/config.windows.toml" = { mode = "track" }
-"~/.config/mise/config.windowshome.toml" = { mode = "track" }
-"~/.config/mise/config.windowswork.toml" = { mode = "track" }
-"~/.config/mise/config.work.toml" = { mode = "track" }
-
-[history]
-exclude = ["*.local.toml"]
+"~/OneDrive - Microsoft/Documents/PowerShell/Microsoft.PowerShell_profile.ps1" = { mode = "track" }
