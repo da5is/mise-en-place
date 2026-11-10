@@ -5,8 +5,7 @@ tmux = "latest"
 claude = "latest"
 codex = "latest"
 opencode = { version = "latest", allow_builds = ["@opencode/cli"] }
-# azure-cli = { version = "latest", dependency_prereleases = "allow", with = ["pip"] }
-azure-cli = { dependency_prereleases = "allow", with = ["pip"] }
+azure-cli = { version = "latest", dependency_prereleases = "allow", with = ["pip"] }
 github-cli = "latest"
 copilot-cli = "latest"
 
