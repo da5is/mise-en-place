@@ -22,3 +22,6 @@ builtin = "history-watch"
 
 [history]
 exclude = ["*.local.toml"]
+
+[settings]
+auto_update = true
