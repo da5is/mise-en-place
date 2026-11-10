@@ -1,0 +1,35 @@
+[bootstrap.packages]
+
+[bootstrap.services.mise-history]
+builtin = "history-watch"
+
+[tasks.bootstrap]
+description = "Configure workstation"
+run = [
+    { task = "install-edge" },
+    { task = "configure-fonts" },
+    { task = "install-copilot-app" },
+    { task = "install-bicep"},
+]
+
+[tools]
+azure-cli = { version = "2.91.0", dependency_prereleases = "allow", with = ["pip"] }
+copilot-cli = "latest"
+github-cli = "latest"
+hunkdiff = "latest"
+lazygit = "latest"
+neovim = "latest"
+node = "latest"
+python = "latest"
+uv = "latest"
+
+[env]
+PIP_INDEX_URL = "https://packagefeedproxy.microsoft.io/pypi/simple/"
+UV_DEFAULT_INDEX = "https://packagefeedproxy.microsoft.io/pypi/simple/"
+MISE_PYPI_REGISTRY_URL = "https://packagefeedproxy.microsoft.io/pypi/simple/{}/"
+NPM_CONFIG_REGISTRY = "https://packagefeedproxy.microsoft.io/npm/"
+_.path = ["{{env.HOME}}/.azure/bin"]
+
+[dotfiles]
+"~/.config/mise/config.toml" = { mode = "track" }
+"~/.config/mise/tasks" = { mode = "track" }
