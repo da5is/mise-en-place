@@ -141,6 +141,7 @@
   "permissions": {
     "config/config.linux.toml": 436,
     "config/config.toml": 436,
+    "config/tasks": 509,
     "home/AppData": 509,
     "home/AppData/Local": 509,
     "home/AppData/Local/Packages": 509,
