@@ -12,9 +12,9 @@ builtin = "history-watch"
 
 [dotfiles]
 "~/.config/mise" = { mode = "track" }
-"~/.config/mise/config.toml" = { mode = "track" }
 "~/.config/mise/config.linux.toml" = { mode = "track" }
 "~/.config/mise/config.linuxgui.toml" = { mode = "track" }
+"~/.config/mise/config.toml" = { mode = "track" }
 "~/.config/mise/config.windows.toml" = { mode = "track" }
 "~/.config/mise/config.windowshome.toml" = { mode = "track" }
 "~/.config/mise/config.windowswork.toml" = { mode = "track" }
