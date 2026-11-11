@@ -10,6 +10,9 @@ github-cli = "latest"
 copilot-cli = "latest"
 azd = "latest"
 
+[bootstrap.packages]
+"apt:fish-shell" = "latest"
+
 [tasks.bootstrap]
 
 [env]
