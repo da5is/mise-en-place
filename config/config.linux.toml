@@ -11,7 +11,7 @@ copilot-cli = "latest"
 azd = "latest"
 
 [bootstrap.packages]
-"apt:fishshell" = "latest"
+"apt:fish" = "latest"
 
 [tasks.bootstrap]
 
