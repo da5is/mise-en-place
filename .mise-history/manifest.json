@@ -132,12 +132,6 @@
           "default": false
         }
       ]
-    },
-    {
-      "path": "home/ls",
-      "autosave": true,
-      "encrypt": false,
-      "variants": []
     }
   ],
   "exclude": [
