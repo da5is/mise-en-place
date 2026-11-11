@@ -18,5 +18,6 @@ azd = "latest"
 [env]
 _.path = ["{{env.HOME}}/.azure/bin"]
 
-[settings]
-login_shell = "/usr/bin/pwsh"
+
+[bootstrap.user]
+login_shell = "fish"
