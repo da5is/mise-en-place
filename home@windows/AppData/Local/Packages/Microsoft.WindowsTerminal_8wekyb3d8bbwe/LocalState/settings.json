@@ -30,6 +30,7 @@
     {
         "defaults":
         {
+            "bellStyle": "window",
             "colorScheme": "One Half Dark",
             "font":
             {
