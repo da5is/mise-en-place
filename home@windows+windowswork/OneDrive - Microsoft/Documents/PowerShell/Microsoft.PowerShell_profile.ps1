@@ -6,6 +6,16 @@ function Import-OrInstallModule {
         [int] $TimeoutSeconds = 15
     )
 
+    try {
+        Import-Module $Name -Global -ErrorAction Stop
+        return
+    }
+    catch [System.IO.FileNotFoundException] {
+        if ($_.FullyQualifiedErrorId -notlike 'Modules_ModuleNotFound,*') {
+            throw
+        }
+    }
+
     if (-not (Get-Module -ListAvailable -Name $Name)) {
         Write-Host "Installing PowerShell module '$Name'..." -ForegroundColor DarkGray
 
@@ -37,16 +47,41 @@ function Import-OrInstallModule {
     }
 
     if (Get-Module -ListAvailable -Name $Name) {
-        Import-Module $Name -ErrorAction SilentlyContinue
+        Import-Module $Name -Global -ErrorAction Stop
     }
 }
 
-Import-OrInstallModule 'Terminal-Icons'
-
-if (Get-Command git -ErrorAction SilentlyContinue) {
-    Import-OrInstallModule 'posh-git'
+if (-not (Test-Path Variable:\global:__profileOriginalPrompt)) {
+    $global:__profileOriginalPrompt = $function:prompt
 }
 
-if (Get-Command mise -ErrorAction SilentlyContinue) {
-    mise activate pwsh | Out-String | Invoke-Expression
-}(& 'C:\Users\matdavi\.local\bin\mise.exe' activate pwsh) | Out-String | Invoke-Expression
+# Keep mise's prompt wrapper intact when posh-git loads after the first prompt.
+function global:prompt {
+    $gitPrompt = $ExecutionContext.SessionState.PSVariable.GetValue('GitPromptScriptBlock')
+    if ($gitPrompt) {
+        & $gitPrompt
+    }
+    else {
+        & $global:__profileOriginalPrompt
+    }
+}
+
+Register-EngineEvent -SourceIdentifier PowerShell.OnIdle -MaxTriggerCount 1 -SupportEvent -Action {
+    foreach ($moduleName in @('Terminal-Icons', 'posh-git')) {
+        if ($moduleName -eq 'posh-git' -and -not (Get-Command git -CommandType Application -ErrorAction Ignore)) {
+            continue
+        }
+
+        try {
+            Import-OrInstallModule $moduleName
+        }
+        catch {
+            $Host.UI.WriteWarningLine("Failed to load '$moduleName': $($_.Exception.Message)")
+        }
+    }
+} | Out-Null
+
+$mise = Join-Path $HOME '.local\bin\mise.exe'
+if (Test-Path -LiteralPath $mise) {
+    (& $mise activate pwsh) | Out-String | Invoke-Expression
+}
