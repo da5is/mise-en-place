@@ -53,16 +53,16 @@ function Import-OrInstallModule {
 
 if (-not (Test-Path Variable:\global:__profileOriginalPrompt)) {
     $global:__profileOriginalPrompt = $function:prompt
-}
 
-# Keep mise's prompt wrapper intact when posh-git loads after the first prompt.
-function global:prompt {
-    $gitPrompt = $ExecutionContext.SessionState.PSVariable.GetValue('GitPromptScriptBlock')
-    if ($gitPrompt) {
-        & $gitPrompt
-    }
-    else {
-        & $global:__profileOriginalPrompt
+    # Keep mise's prompt wrapper intact when posh-git loads or the profile is reloaded.
+    function global:prompt {
+        $gitPrompt = $ExecutionContext.SessionState.PSVariable.GetValue('GitPromptScriptBlock')
+        if ($gitPrompt) {
+            & $gitPrompt
+        }
+        else {
+            & $global:__profileOriginalPrompt
+        }
     }
 }
 
