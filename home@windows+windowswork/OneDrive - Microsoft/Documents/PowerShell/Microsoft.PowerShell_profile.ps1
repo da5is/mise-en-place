@@ -79,6 +79,16 @@ Register-EngineEvent -SourceIdentifier PowerShell.OnIdle -MaxTriggerCount 1 -Sup
             $Host.UI.WriteWarningLine("Failed to load '$moduleName': $($_.Exception.Message)")
         }
     }
+    if ($env:__COPILOT_STARTUP_PROBE) {
+        $completion = TabExpansion2 -InputScript 'git che' -CursorColumn 7
+        $result = @{
+            Modules = @(Get-Module Terminal-Icons, posh-git).Name
+            GitCheckoutCompletion = 'checkout' -in $completion.CompletionMatches.CompletionText
+            MisePromptPreserved = $function:prompt.ToString().Contains('_mise_hook')
+            PSReadLineLoaded = [bool](Get-Module PSReadLine)
+        }
+        [IO.File]::WriteAllText($env:__COPILOT_STARTUP_PROBE, ($result | ConvertTo-Json -Compress))
+    }
 } | Out-Null
 
 $mise = Join-Path $HOME '.local\bin\mise.exe'
