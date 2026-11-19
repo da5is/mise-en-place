@@ -74,6 +74,54 @@ Register-EngineEvent -SourceIdentifier PowerShell.OnIdle -MaxTriggerCount 1 -Sup
 
         try {
             Import-OrInstallModule $moduleName
+
+            if ($moduleName -eq 'Terminal-Icons') {
+                Get-Item -LiteralPath $HOME, $PROFILE.CurrentUserCurrentHost |
+                    Out-String |
+                    Out-Null
+            }
+            elseif ($moduleName -eq 'posh-git') {
+                # Cache posh-git's native helper instead of compiling C# on the first prompt.
+                if (-not ('NativeConsoleMethods' -as [type])) {
+                    $poshGit = Get-Module posh-git
+                    $consoleSource = & $poshGit { $consoleModeSource }
+                    if ([string]::IsNullOrWhiteSpace($consoleSource)) {
+                        throw 'posh-git console helper source was not found.'
+                    }
+
+                    $keySource = "$([Environment]::Version)|$([Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture)|$consoleSource"
+                    $key = [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($keySource)))
+                    $cacheDirectory = Join-Path $env:LOCALAPPDATA 'PowerShell\Cache\posh-git'
+                    $cachePath = Join-Path $cacheDirectory "NativeConsoleMethods-$key.dll"
+
+                    if (-not [IO.File]::Exists($cachePath)) {
+                        [void][IO.Directory]::CreateDirectory($cacheDirectory)
+                        $temporaryPath = Join-Path $cacheDirectory "$([guid]::NewGuid().ToString('N')).dll"
+                        try {
+                            Add-Type -TypeDefinition $consoleSource -OutputAssembly $temporaryPath -ErrorAction Stop
+                            try {
+                                [IO.File]::Move($temporaryPath, $cachePath)
+                            }
+                            catch [IO.IOException] {
+                                if (-not [IO.File]::Exists($cachePath)) {
+                                    throw
+                                }
+                            }
+                        }
+                        finally {
+                            if ([IO.File]::Exists($temporaryPath)) {
+                                [IO.File]::Delete($temporaryPath)
+                            }
+                        }
+                    }
+
+                    [void][Reflection.Assembly]::LoadFrom($cachePath)
+                }
+
+                if ($global:GitPromptSettings.AnsiConsole) {
+                    & $global:GitPromptScriptBlock | Out-Null
+                }
+            }
         }
         catch {
             $Host.UI.WriteWarningLine("Failed to load '$moduleName': $($_.Exception.Message)")
