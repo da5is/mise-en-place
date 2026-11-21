@@ -30,6 +30,7 @@
     {
         "defaults":
         {
+            "bellStyle": "window",
             "colorScheme": "One Half Dark",
             "font":
             {
@@ -65,10 +66,15 @@
                 "source": "Windows.Terminal.PowershellCore"
             },
             {
-                "guid": "{2014d82e-6ee2-5dbe-8862-d3fd47aee180}",
+                "commandline": "C:\\Windows\\system32\\wsl.exe --distribution-id {e8db157a-6b51-49cd-a92c-c9bd5205c817}",
+                "cursorShape": "filledBox",
+                "guid": "{b518486f-865f-4590-a8fc-5a188dfbdbe5}",
                 "hidden": false,
-                "name": "Ubuntu-26.04",
-                "source": "Microsoft.WSL"
+                "icon": "C:\\Users\\matdavi\\AppData\\Local\\wsl\\{e8db157a-6b51-49cd-a92c-c9bd5205c817}\\shortcut.ico",
+                "name": "Ubuntu",
+                "pathTranslationStyle": "wsl",
+                "startingDirectory": "~",
+                "suppressApplicationTitle": true
             }
         ]
     },
