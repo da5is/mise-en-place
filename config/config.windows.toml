@@ -8,6 +8,7 @@
 "winget:Obsidian.Obsidian" = "latest"
 "winget:GitHub.Copilot" = "latest"
 "winget:Microsoft.AzureCLI" = "latest"
+"winget:marlocarlo.psmux" = "latest"
 
 [dotfiles]
 "~/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json" = { mode = "track", variants = [{ os = "windows" }] }
