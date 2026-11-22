@@ -1,9 +1,54 @@
-# ---- PoshCopilot: Ctrl+Shift+O turns the current line into a PowerShell command via GitHub Copilot CLI ----
-# Requires: winget install GitHub.Copilot  (then run `copilot` once and /login). Esc cancels.
-$env:POSHCOPILOT_MODEL  = $env:POSHCOPILOT_MODEL  ?? 'mai-code-1.1-flash'
-$env:POSHCOPILOT_EFFORT = $env:POSHCOPILOT_EFFORT ?? 'low'
+# =====================================================================================
+#  Warp-style PowerShell profile (Windows Terminal / Rio), backed by GitHub Copilot CLI
+#  Requires: PowerShell 7.2+, Copilot CLI (winget install GitHub.Copilot, run `copilot`
+#  once and /login). Optional: psmux for persistent sessions.
+#  Put oh-my-posh / starship / your own prompt setup ABOVE the "AI error correction"
+#  section so it gets wrapped rather than replaced.
+# =====================================================================================
 
-Set-PSReadLineKeyHandler -Chord 'Ctrl+Shift+o' -BriefDescription 'CopilotComplete' `
+# ---- Scripts: behave like -NoProfile from here down -----------------------------------
+# PowerShell only loads PSReadLine for an interactive prompt, so no PSReadLine = a script
+# (pwsh -File, pwsh -Command without -NoExit, -NonInteractive, piped input).
+# Anything placed ABOVE this line still runs for scripts.
+if (-not (Get-Module PSReadLine)) { return }
+
+# ---- Settings (override any of these before this point) ------------------------------
+$env:POSHCOPILOT_MODEL  = $env:POSHCOPILOT_MODEL  ?? 'mai-code-1.1-flash'
+$env:POSHCOPILOT_EFFORT = $env:POSHCOPILOT_EFFORT ?? 'low'   # use 'none' if the model rejects 'low'
+$env:POSHCOPILOT_FIX    = $env:POSHCOPILOT_FIX    ?? '1'     # '0' turns off AI error correction
+
+# ---- History ghost text --------------------------------------------------------------
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle InlineView
+
+# Right arrow: at the end of the line, accept the next word of the suggestion; otherwise move normally
+Set-PSReadLineKeyHandler -Chord RightArrow -BriefDescription 'SmartForwardChar' -ScriptBlock {
+    $line = $null; $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    if ($cursor -lt $line.Length) { [Microsoft.PowerShell.PSConsoleReadLine]::ForwardChar() }
+    else { [Microsoft.PowerShell.PSConsoleReadLine]::AcceptNextSuggestionWord() }
+}
+# End: at the end of the line, accept the whole suggestion; otherwise jump to the end
+Set-PSReadLineKeyHandler -Chord End -BriefDescription 'SmartEnd' -ScriptBlock {
+    $line = $null; $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    if ($cursor -lt $line.Length) { [Microsoft.PowerShell.PSConsoleReadLine]::EndOfLine() }
+    else { [Microsoft.PowerShell.PSConsoleReadLine]::AcceptSuggestion() }
+}
+
+# ---- Copilot CLI helpers -------------------------------------------------------------
+function Get-PoshCopilotArgs {
+    '-s', '--no-color',
+    '--model', $env:POSHCOPILOT_MODEL,
+    '--reasoning-effort', $env:POSHCOPILOT_EFFORT,
+    '--available-tools',            # empty list = no tools: it can only answer, never run anything
+    '--disable-builtin-mcps', '--no-custom-instructions', '--no-ask-user'
+}
+
+# ---- Ctrl+Shift+O (and Alt+O fallback): turn the current line into a command ---------
+# Alt+O is there because Rio and psmux may deliver Ctrl+Shift+O as plain Ctrl+O.
+foreach ($_chord in 'Ctrl+Shift+o', 'Alt+o') {
+Set-PSReadLineKeyHandler -Chord $_chord -BriefDescription 'CopilotComplete' `
     -Description 'Turn the current line into a PowerShell command using GitHub Copilot CLI' -ScriptBlock {
 
     $rl = [Microsoft.PowerShell.PSConsoleReadLine]
@@ -19,13 +64,7 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+Shift+o' -BriefDescription 'CopilotComplet
         $psi.FileName = $env:ComSpec
         '/d', '/c', $exe.Source | ForEach-Object { $psi.ArgumentList.Add($_) }
     } else { $psi.FileName = $exe.Source }
-
-    @('-s', '--no-color',
-      '--model', $env:POSHCOPILOT_MODEL,
-      '--reasoning-effort', $env:POSHCOPILOT_EFFORT,
-      '--available-tools',            # no tools: answer only, never runs anything
-      '--disable-builtin-mcps', '--no-custom-instructions', '--no-ask-user'
-    ) | ForEach-Object { $psi.ArgumentList.Add($_) }
+    Get-PoshCopilotArgs | ForEach-Object { $psi.ArgumentList.Add($_) }
 
     $psi.UseShellExecute = $false; $psi.CreateNoWindow = $true
     $psi.RedirectStandardInput = $true; $psi.RedirectStandardOutput = $true; $psi.RedirectStandardError = $true
@@ -71,4 +110,129 @@ Input: $line
     }
     $rl::Replace(0, $line.Length, $cmd.Trim())   # review, then press Enter
 }
-# ---- end PoshCopilot ----
+}
+Remove-Variable _chord -ErrorAction SilentlyContinue
+
+# ---- AI error correction: when a command fails, a fix appears as ghost text ----------
+# The fix is offered for the next command line only. Start typing it (or press End/→ on
+# an empty line if your PSReadLine shows it there) to accept; anything else dismisses it.
+if (-not ('AICorrector' -as [type])) {
+    try {
+        Add-Type -TypeDefinition @'
+using System;
+using System.Collections.Generic;
+using System.Management.Automation.Subsystem;
+using System.Management.Automation.Subsystem.Prediction;
+using System.Threading;
+
+public sealed class AICorrector : ICommandPredictor {
+    public static volatile string Suggestion = string.Empty;
+    public static volatile int Generation = 0;
+
+    private static readonly Guid _id = new Guid("6f2a8c41-3d7e-4b9a-9c15-2e8d0f7a4b63");
+    public Guid Id => _id;
+    public string Name => "AICorrector";
+    public string Description => "Copilot fix for the last failed command";
+
+    public bool CanAcceptFeedback(PredictionClient client, PredictorFeedbackKind feedback) => false;
+
+    public SuggestionPackage GetSuggestion(PredictionClient client, PredictionContext context, CancellationToken ct) {
+        var s = Suggestion;
+        if (string.IsNullOrWhiteSpace(s)) return default;
+        var input = context.InputAst.Extent.Text;
+        if (input.Length > 0 && !s.StartsWith(input, StringComparison.OrdinalIgnoreCase)) return default;
+        return new SuggestionPackage(new List<PredictiveSuggestion> { new PredictiveSuggestion(s) });
+    }
+
+    public void OnSuggestionDisplayed(PredictionClient client, uint session, int countOrIndex) { }
+    public void OnSuggestionAccepted(PredictionClient client, uint session, string acceptedSuggestion) { }
+    public void OnCommandLineAccepted(PredictionClient client, IReadOnlyList<string> history) { }
+    public void OnCommandLineExecuted(PredictionClient client, string commandLine, bool success) { }
+}
+'@
+        [System.Management.Automation.Subsystem.SubsystemManager]::RegisterSubsystem(
+            [System.Management.Automation.Subsystem.SubsystemKind]::CommandPredictor, [AICorrector]::new())
+    } catch {
+        Write-Warning "AI error correction disabled: $($_.Exception.Message)"
+        $env:POSHCOPILOT_FIX = '0'
+    }
+}
+
+if (-not $global:PoshCopilotFixState) {
+    $global:PoshCopilotFixState = @{
+        OrigPrompt = $function:prompt          # wrap whatever prompt you already have
+        LastId     = (Get-History -Count 1).Id
+        LastErr    = $global:Error[0]
+        PluginOn   = $false
+    }
+}
+
+function global:prompt {
+    $ok   = $?
+    $exit = $global:LASTEXITCODE
+    $st   = $global:PoshCopilotFixState
+
+    if ($env:POSHCOPILOT_FIX -ne '0' -and ('AICorrector' -as [type])) {
+        # Any fix from the previous failure only lives for one command line
+        if ($st.PluginOn) {
+            [AICorrector]::Generation = [AICorrector]::Generation + 1
+            [AICorrector]::Suggestion = ''
+            Set-PSReadLineOption -PredictionSource History
+            $st.PluginOn = $false
+        }
+        Get-Job -Name PoshCopilotFix -ErrorAction SilentlyContinue |
+            Where-Object State -ne 'Running' | Remove-Job -Force
+
+        $last = Get-History -Count 1
+        if ($last -and $last.Id -ne $st.LastId) {            # a real command ran (not an empty Enter)
+            $st.LastId = $last.Id
+            $newErr = if ($global:Error.Count -and -not [object]::ReferenceEquals($global:Error[0], $st.LastErr)) { "$($global:Error[0])" }
+            $st.LastErr = $global:Error[0]
+
+            # $? covers cmdlet failures and non-zero exit codes; skip Ctrl+C (0xC000013A)
+            $copilot = Get-Command copilot -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+            if (-not $ok -and $exit -ne -1073741510 -and $copilot) {
+                $detail = if ($newErr) { "Error: $newErr" } else { "Exit code: $exit" }
+                $prompt = @"
+You are a PowerShell 7 expert on Windows. A command failed.
+Reply with exactly one line: the corrected command. No markdown, no code fences, no explanation.
+Command: $($last.CommandLine)
+$detail
+Directory: $($PWD.Path)
+"@
+                [AICorrector]::Generation = [AICorrector]::Generation + 1
+                [AICorrector]::Suggestion = ''
+                Set-PSReadLineOption -PredictionSource Plugin
+                $st.PluginOn = $true
+
+                $null = Start-ThreadJob -Name PoshCopilotFix -ArgumentList @(
+                    $copilot.Source, (Get-PoshCopilotArgs), $prompt, [AICorrector]::Generation
+                ) -ScriptBlock {
+                    param($exe, $copilotArgs, $prompt, $gen)
+                    try {
+                        $out = $prompt | & $exe @copilotArgs 2>$null
+                        $fix = $out | Where-Object { $_.Trim() -and $_ -notmatch '^\s*```' } | Select-Object -First 1
+                        # Only publish if no newer command has run since this job started
+                        if ($fix -and [AICorrector]::Generation -eq $gen) { [AICorrector]::Suggestion = $fix.Trim() }
+                    } catch { }
+                }
+            }
+        }
+    }
+
+    $global:LASTEXITCODE = $exit
+    if ($st.OrigPrompt) { & $st.OrigPrompt } else { "PS $($PWD.Path)$('>' * ($NestedPromptLevel + 1)) " }
+}
+
+# ---- psmux auto-start: keep this at the very bottom ----------------------------------
+# Only for a plain interactive pwsh: skipped inside psmux, with -NoExit -Command, in VS Code,
+# and when NO_MUX is set. (Scripts never get this far.)
+$_hasCommand = [Environment]::GetCommandLineArgs() -match '^(-|/)(c|com\w*|cwa|commandwithargs)$'
+if (-not $_hasCommand -and -not $env:TMUX -and -not $env:NO_MUX -and
+    $Host.Name -eq 'ConsoleHost' -and $env:TERM_PROGRAM -ne 'vscode' -and
+    (Get-Command psmux -ErrorAction SilentlyContinue)) {
+
+    psmux attach 2>$null || psmux
+    exit $LASTEXITCODE    # close the outer shell when you detach/quit; remove to drop back to pwsh
+}
+Remove-Variable _hasCommand -ErrorAction SilentlyContinue
