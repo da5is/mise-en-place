@@ -53,7 +53,15 @@
       "path": "home/.psmux.conf",
       "autosave": true,
       "encrypt": false,
-      "variants": []
+      "variants": [
+        {
+          "os": [
+            "windows"
+          ],
+          "profile": null,
+          "default": false
+        }
+      ]
     },
     {
       "path": "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json",
