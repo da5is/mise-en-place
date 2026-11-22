@@ -50,6 +50,12 @@
       "variants": []
     },
     {
+      "path": "home/.psmux.conf",
+      "autosave": true,
+      "encrypt": false,
+      "variants": []
+    },
+    {
       "path": "home/AppData/Local/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/settings.json",
       "autosave": true,
       "encrypt": false,
