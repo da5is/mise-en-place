@@ -1,3 +1,4 @@
+PSReadLine loaded: $([bool](Get-Module PSReadLine))
 # =====================================================================================
 #  Warp-style PowerShell profile (Windows Terminal / Rio), backed by GitHub Copilot CLI
 #  Requires: PowerShell 7.2+, Copilot CLI (winget install GitHub.Copilot, run `copilot`
